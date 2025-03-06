@@ -1,51 +1,3 @@
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll("pre code").forEach((codeBlock) => {
-        const button = document.createElement("button");
-        button.className = "copy-button";
-        button.innerText = "Copy";
-
-        button.addEventListener("click", () => {
-            navigator.clipboard.writeText(codeBlock.innerText).then(() => {
-                button.innerText = "Copied!";
-                setTimeout(() => {
-                    button.innerText = "Copy";
-                }, 2000);
-            }).catch((err) => {
-                console.error("Failed to copy: ", err);
-            });
-        });
-
-        const pre = codeBlock.parentNode;
-        pre.parentNode.insertBefore(button, pre);
-    });
-});
-</script>
-
-<style>
-.copy-button {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    font-size: 12px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-.copy-button:hover {
-    background: #0056b3;
-}
-pre {
-    position: relative;
-    background: #f5f5f5;
-    padding: 10px;
-    border-radius: 5px;
-}
-</style>
-
 ## Lệnh Solana CLI
 
 ### 1. Kiểm tra phiên bản Solana CLI
@@ -211,3 +163,51 @@ Ví dụ:
 <pre><code>
 solana confirm 5H8vQ...as6
 </code></pre>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("pre code").forEach((codeBlock) => {
+        const button = document.createElement("button");
+        button.className = "copy-button";
+        button.innerText = "Copy";
+
+        button.addEventListener("click", () => {
+            navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+                button.innerText = "Copied!";
+                setTimeout(() => {
+                    button.innerText = "Copy";
+                }, 2000);
+            }).catch((err) => {
+                console.error("Failed to copy: ", err);
+            });
+        });
+
+        const pre = codeBlock.parentNode;
+        pre.parentNode.insertBefore(button, pre);
+    });
+});
+</script>
+
+<style>
+.copy-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.copy-button:hover {
+    background: #0056b3;
+}
+pre {
+    position: relative;
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+}
+</style>
