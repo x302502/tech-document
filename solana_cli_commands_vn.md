@@ -1,23 +1,58 @@
 <script>
-function copyToClipboard(elementId) {
-    var copyText = document.getElementById(elementId);
-    navigator.clipboard.writeText(copyText.innerText).then(() => {
-        alert("Copied to clipboard!");
-    }).catch(err => {
-        console.error("Failed to copy: ", err);
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("pre code").forEach((codeBlock) => {
+        const button = document.createElement("button");
+        button.className = "copy-button";
+        button.innerText = "Copy";
+
+        button.addEventListener("click", () => {
+            navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+                button.innerText = "Copied!";
+                setTimeout(() => {
+                    button.innerText = "Copy";
+                }, 2000);
+            }).catch((err) => {
+                console.error("Failed to copy: ", err);
+            });
+        });
+
+        const pre = codeBlock.parentNode;
+        pre.parentNode.insertBefore(button, pre);
     });
-}
+});
 </script>
+
+<style>
+.copy-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.copy-button:hover {
+    background: #0056b3;
+}
+pre {
+    position: relative;
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+}
+</style>
 
 ## Lệnh Solana CLI
 
 ### 1. Kiểm tra phiên bản Solana CLI
 
-<button onclick="copyToClipboard('code1')">Copy</button>
-
-<pre id="code1">
+<pre><code>
 solana --version
-</pre>
+</code></pre>
 
 📌 **Giải thích**: Hiển thị phiên bản Solana CLI hiện tại.
 
@@ -25,111 +60,93 @@ solana --version
 
 ### 2. Cấu hình Solana CLI
 
-<button onclick="copyToClipboard('code2')">Copy</button>
-
-<pre id="code2">
+<pre><code>
 solana config set --url https://api.mainnet-beta.solana.com
-</pre>
+</code></pre>
 
 📌 **Giải thích**: Đặt môi trường mặc định để kết nối với Mainnet Beta của Solana. Bạn cũng có thể chuyển sang Devnet hoặc Testnet:
-<button onclick="copyToClipboard('code3')">Copy</button>
 
-<pre id="code3">
+<pre><code>
 solana config set --url https://api.devnet.solana.com
-</pre>
+</code></pre>
 
 Kiểm tra cấu hình hiện tại:
-<button onclick="copyToClipboard('code4')">Copy</button>
 
-<pre id="code4">
+<pre><code>
 solana config get
-</pre>
+</code></pre>
 
 ---
 
 ### 3. Tạo ví mới
 
-<button onclick="copyToClipboard('code5')">Copy</button>
-
-<pre id="code5">
+<pre><code>
 solana-keygen new --outfile ~/my-keypair.json
-</pre>
+</code></pre>
 
 📌 **Giải thích**: Tạo một keypair mới và lưu vào file `my-keypair.json`.
 
 Để hiển thị địa chỉ ví của keypair:
-<button onclick="copyToClipboard('code6')">Copy</button>
 
-<pre id="code6">
+<pre><code>
 solana-keygen pubkey ~/my-keypair.json
-</pre>
+</code></pre>
 
 ---
 
 ### 4. Kiểm tra số dư ví
 
-<button onclick="copyToClipboard('code7')">Copy</button>
-
-<pre id="code7">
+<pre><code>
 solana balance
-</pre>
+</code></pre>
 
 📌 **Giải thích**: Hiển thị số dư của ví mặc định.
 
 Kiểm tra số dư của một ví cụ thể:
-<button onclick="copyToClipboard('code8')">Copy</button>
 
-<pre id="code8">
-solana balance <PUBLIC_KEY>
-</pre>
+<pre><code>
+solana balance &lt;PUBLIC_KEY&gt;
+</code></pre>
 
 ---
 
 ### 5. Nhận SOL miễn phí (chỉ trên Devnet hoặc Testnet)
 
-<button onclick="copyToClipboard('code9')">Copy</button>
-
-<pre id="code9">
+<pre><code>
 solana airdrop 1
-</pre>
+</code></pre>
 
 📌 **Giải thích**: Yêu cầu 1 SOL trên Devnet/Testnet. Nếu dùng Mainnet, lệnh này không hoạt động.
 
 Yêu cầu nhiều SOL hơn:
-<button onclick="copyToClipboard('code10')">Copy</button>
 
-<pre id="code10">
-solana airdrop 5 <PUBLIC_KEY>
-</pre>
+<pre><code>
+solana airdrop 5 &lt;PUBLIC_KEY&gt;
+</code></pre>
 
 ---
 
 ### 6. Gửi SOL đến một địa chỉ khác
 
-<button onclick="copyToClipboard('code11')">Copy</button>
-
-<pre id="code11">
-solana transfer <ĐỊA_CHỈ_NGƯỜI_NHẬN> <SỐ_LƯỢNG_SOL>
-</pre>
+<pre><code>
+solana transfer &lt;ĐỊA_CHỈ_NGƯỜI_NHẬN&gt; &lt;SỐ_LƯỢNG_SOL&gt;
+</code></pre>
 
 📌 **Giải thích**: Chuyển SOL từ ví mặc định đến một địa chỉ khác.
 
 Ví dụ:
-<button onclick="copyToClipboard('code12')">Copy</button>
 
-<pre id="code12">
+<pre><code>
 solana transfer 4k3DyjJw... 0.5 --allow-unfunded-recipient
-</pre>
+</code></pre>
 
 ---
 
 ### 7. Kiểm tra lịch sử giao dịch
 
-<button onclick="copyToClipboard('code13')">Copy</button>
-
-<pre id="code13">
-solana transaction-history <PUBLIC_KEY>
-</pre>
+<pre><code>
+solana transaction-history &lt;PUBLIC_KEY&gt;
+</code></pre>
 
 📌 **Giải thích**: Xem lịch sử giao dịch của một địa chỉ ví.
 
@@ -137,30 +154,25 @@ solana transaction-history <PUBLIC_KEY>
 
 ### 8. Triển khai Smart Contract (Program)
 
-<button onclick="copyToClipboard('code14')">Copy</button>
-
-<pre id="code14">
-solana program deploy <ĐƯỜNG_DẪN_TỚI_TỆP_BPF>
-</pre>
+<pre><code>
+solana program deploy &lt;ĐƯỜNG_DẪN_TỚI_TỆP_BPF&gt;
+</code></pre>
 
 📌 **Giải thích**: Triển khai một chương trình đã biên dịch (BPF) lên blockchain.
 
 Ví dụ:
-<button onclick="copyToClipboard('code15')">Copy</button>
 
-<pre id="code15">
+<pre><code>
 solana program deploy ./dist/program/my_program.so
-</pre>
+</code></pre>
 
 ---
 
 ### 9. Kiểm tra danh sách các tài khoản thuộc ví
 
-<button onclick="copyToClipboard('code16')">Copy</button>
-
-<pre id="code16">
-solana account <PUBLIC_KEY>
-</pre>
+<pre><code>
+solana account &lt;PUBLIC_KEY&gt;
+</code></pre>
 
 📌 **Giải thích**: Hiển thị thông tin chi tiết về tài khoản Solana, bao gồm số dư, owner, v.v.
 
@@ -168,11 +180,9 @@ solana account <PUBLIC_KEY>
 
 ### 10. Chạy Validator Node (chỉ dành cho node operator)
 
-<button onclick="copyToClipboard('code17')">Copy</button>
-
-<pre id="code17">
+<pre><code>
 solana-validator --identity ~/validator-keypair.json --rpc-port 8899 --entrypoint entrypoint.mainnet-beta.solana.com:8001
-</pre>
+</code></pre>
 
 📌 **Giải thích**: Chạy một validator node để tham gia mạng lưới Solana.
 
@@ -180,11 +190,9 @@ solana-validator --identity ~/validator-keypair.json --rpc-port 8899 --entrypoin
 
 ### 11. Kiểm tra thông tin về một Block
 
-<button onclick="copyToClipboard('code18')">Copy</button>
-
-<pre id="code18">
-solana block <BLOCK_SLOT>
-</pre>
+<pre><code>
+solana block &lt;BLOCK_SLOT&gt;
+</code></pre>
 
 📌 **Giải thích**: Xem thông tin về một block trên Solana.
 
@@ -192,17 +200,14 @@ solana block <BLOCK_SLOT>
 
 ### 12. Kiểm tra trạng thái của một giao dịch
 
-<button onclick="copyToClipboard('code19')">Copy</button>
-
-<pre id="code19">
-solana confirm <TRANSACTION_SIGNATURE>
-</pre>
+<pre><code>
+solana confirm &lt;TRANSACTION_SIGNATURE&gt;
+</code></pre>
 
 📌 **Giải thích**: Kiểm tra trạng thái giao dịch bằng Transaction Signature.
 
 Ví dụ:
-<button onclick="copyToClipboard('code20')">Copy</button>
 
-<pre id="code20">
+<pre><code>
 solana confirm 5H8vQ...as6
-</pre>
+</code></pre>

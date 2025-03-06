@@ -1,164 +1,213 @@
 <script>
-function copyToClipboard(elementId) {
-    var copyText = document.getElementById(elementId);
-    navigator.clipboard.writeText(copyText.innerText).then(() => {
-        alert("Copied to clipboard!");
-    }).catch(err => {
-        console.error("Failed to copy: ", err);
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("pre code").forEach((codeBlock) => {
+        const button = document.createElement("button");
+        button.className = "copy-button";
+        button.innerText = "Copy";
+
+        button.addEventListener("click", () => {
+            navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+                button.innerText = "Copied!";
+                setTimeout(() => {
+                    button.innerText = "Copy";
+                }, 2000);
+            }).catch((err) => {
+                console.error("Failed to copy: ", err);
+            });
+        });
+
+        const pre = codeBlock.parentNode;
+        pre.parentNode.insertBefore(button, pre);
     });
-}
+});
 </script>
+
+<style>
+.copy-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.copy-button:hover {
+    background: #0056b3;
+}
+pre {
+    position: relative;
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+}
+</style>
 
 ## Solana CLI Commands
 
 ### 1. Check Solana CLI Version
-<button onclick="copyToClipboard('code1')">Copy</button>
-<pre id="code1">
+
+<pre><code>
 solana --version
-</pre>
+</code></pre>
+
 📌 **Explanation**: Displays the currently installed Solana CLI version.
 
 ---
 
 ### 2. Configure Solana CLI
-<button onclick="copyToClipboard('code2')">Copy</button>
-<pre id="code2">
+
+<pre><code>
 solana config set --url https://api.mainnet-beta.solana.com
-</pre>
+</code></pre>
+
 📌 **Explanation**: Sets the default environment to connect to Solana Mainnet Beta. You can also switch to Devnet or Testnet:
-<button onclick="copyToClipboard('code3')">Copy</button>
-<pre id="code3">
+
+<pre><code>
 solana config set --url https://api.devnet.solana.com
-</pre>
+</code></pre>
 
 Check the current configuration:
-<button onclick="copyToClipboard('code4')">Copy</button>
-<pre id="code4">
+
+<pre><code>
 solana config get
-</pre>
+</code></pre>
 
 ---
 
 ### 3. Generate a New Wallet
-<button onclick="copyToClipboard('code5')">Copy</button>
-<pre id="code5">
+
+<pre><code>
 solana-keygen new --outfile ~/my-keypair.json
-</pre>
+</code></pre>
+
 📌 **Explanation**: Creates a new keypair and saves it to `my-keypair.json`.
 
 To display the public key of the generated keypair:
-<button onclick="copyToClipboard('code6')">Copy</button>
-<pre id="code6">
+
+<pre><code>
 solana-keygen pubkey ~/my-keypair.json
-</pre>
+</code></pre>
 
 ---
 
 ### 4. Check Wallet Balance
-<button onclick="copyToClipboard('code7')">Copy</button>
-<pre id="code7">
+
+<pre><code>
 solana balance
-</pre>
+</code></pre>
+
 📌 **Explanation**: Displays the balance of the default wallet.
 
 To check the balance of a specific wallet:
-<button onclick="copyToClipboard('code8')">Copy</button>
-<pre id="code8">
-solana balance <PUBLIC_KEY>
-</pre>
+
+<pre><code>
+solana balance &lt;PUBLIC_KEY&gt;
+</code></pre>
 
 ---
 
 ### 5. Request Free SOL (Devnet or Testnet Only)
-<button onclick="copyToClipboard('code9')">Copy</button>
-<pre id="code9">
+
+<pre><code>
 solana airdrop 1
-</pre>
+</code></pre>
+
 📌 **Explanation**: Requests 1 SOL on Devnet/Testnet. This command does not work on Mainnet.
 
 Request more SOL:
-<button onclick="copyToClipboard('code10')">Copy</button>
-<pre id="code10">
-solana airdrop 5 <PUBLIC_KEY>
-</pre>
+
+<pre><code>
+solana airdrop 5 &lt;PUBLIC_KEY&gt;
+</code></pre>
 
 ---
 
 ### 6. Transfer SOL to Another Address
-<button onclick="copyToClipboard('code11')">Copy</button>
-<pre id="code11">
-solana transfer <RECIPIENT_ADDRESS> <AMOUNT_SOL>
-</pre>
+
+<pre><code>
+solana transfer &lt;RECIPIENT_ADDRESS&gt; &lt;AMOUNT_SOL&gt;
+</code></pre>
+
 📌 **Explanation**: Sends SOL from the default wallet to another address.
 
 Example:
-<button onclick="copyToClipboard('code12')">Copy</button>
-<pre id="code12">
+
+<pre><code>
 solana transfer 4k3DyjJw... 0.5 --allow-unfunded-recipient
-</pre>
+</code></pre>
 
 ---
 
 ### 7. Check Transaction History
-<button onclick="copyToClipboard('code13')">Copy</button>
-<pre id="code13">
-solana transaction-history <PUBLIC_KEY>
-</pre>
+
+<pre><code>
+solana transaction-history &lt;PUBLIC_KEY&gt;
+</code></pre>
+
 📌 **Explanation**: Displays the transaction history of a wallet address.
 
 ---
 
 ### 8. Deploy a Smart Contract (Program)
-<button onclick="copyToClipboard('code14')">Copy</button>
-<pre id="code14">
-solana program deploy <BPF_FILE_PATH>
-</pre>
+
+<pre><code>
+solana program deploy &lt;BPF_FILE_PATH&gt;
+</code></pre>
+
 📌 **Explanation**: Deploys a compiled BPF program to the blockchain.
 
 Example:
-<button onclick="copyToClipboard('code15')">Copy</button>
-<pre id="code15">
+
+<pre><code>
 solana program deploy ./dist/program/my_program.so
-</pre>
+</code></pre>
 
 ---
 
 ### 9. List Accounts Belonging to a Wallet
-<button onclick="copyToClipboard('code16')">Copy</button>
-<pre id="code16">
-solana account <PUBLIC_KEY>
-</pre>
+
+<pre><code>
+solana account &lt;PUBLIC_KEY&gt;
+</code></pre>
+
 📌 **Explanation**: Displays detailed information about a Solana account, including balance, owner, etc.
 
 ---
 
 ### 10. Run a Validator Node (For Node Operators)
-<button onclick="copyToClipboard('code17')">Copy</button>
-<pre id="code17">
+
+<pre><code>
 solana-validator --identity ~/validator-keypair.json --rpc-port 8899 --entrypoint entrypoint.mainnet-beta.solana.com:8001
-</pre>
+</code></pre>
+
 📌 **Explanation**: Runs a validator node to participate in the Solana network.
 
 ---
 
 ### 11. Check Block Information
-<button onclick="copyToClipboard('code18')">Copy</button>
-<pre id="code18">
-solana block <BLOCK_SLOT>
-</pre>
+
+<pre><code>
+solana block &lt;BLOCK_SLOT&gt;
+</code></pre>
+
 📌 **Explanation**: Displays details about a specific block on Solana.
 
 ---
 
 ### 12. Check Transaction Status
-<button onclick="copyToClipboard('code19')">Copy</button>
-<pre id="code19">
-solana confirm <TRANSACTION_SIGNATURE>
-</pre>
+
+<pre><code>
+solana confirm &lt;TRANSACTION_SIGNATURE&gt;
+</code></pre>
+
 📌 **Explanation**: Verifies the status of a transaction using its signature.
 
 Example:
-<button onclick="copyToClipboard('code20')">Copy</button>
-<pre id="code20">
+
+<pre><code>
 solana confirm 5H8vQ...as6
-</pre>
+</code></pre>
